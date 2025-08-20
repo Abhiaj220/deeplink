@@ -71,25 +71,36 @@
                     return (typeof window !== "undefined" && typeof document !== "undefined");
                 }
 
+                 if(isAndroid()) {
+                         // ssr - androidPackageName need to take the value from a pillat varaible. Template it or inform Ilay to take care of the same.
+                        const androidPackageName = 'com.astro.astro';
+                        // <-- Replace with your Android app's package name
+                        const referrer = `https://links-astrostgeks.vsscloud-astro-stg.tv/content/36ed2348-26e6-5fd7-a296-230bb038d017~CATC0000000001014675~vod?contentType=content&utm_source=clevertap&utm_medium=post&utm_campaign=Astro&target=actionMenu&socialTitle=My+Chemical+Romance_Cancer&socialDescription=Short+Synopsis+-+English&socialImageLink=http%3A%2F%2Fstaging-vod-poster.astro.com.my%2Fposter%2FIVP%28STB_OTT_STV%29_Idiot_IVP_LAND_917x516_F7B93_20241129_105743.jpg&contentId=36ed2348-26e6-5fd7-a296-230bb038d017%7ECATC0000000001014675%7Evod`
+                         const strippedReferrer = referrer.replace(/^https?:\/\//, '');
+                        const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};end;`;
+                        window.location.href = intentUrl;
+                }
+
+
                 window.setTimeout(function() {
                     // Redirect logic
                     if (isAndroid()) {
                         // ssr - androidPackageName need to take the value from a pillat varaible. Template it or inform Ilay to take care of the same.
-                        const androidPackageName = 'com.astro.astro';
+                        //const androidPackageName = 'com.astro.astro';
                         // <-- Replace with your Android app's package name
-                        const referrer = `https://links-astrostgeks.vsscloud-astro-stg.tv/content/36ed2348-26e6-5fd7-a296-230bb038d017~CATC0000000001014675~vod?contentType=content&utm_source=clevertap&utm_medium=post&utm_campaign=Astro&target=actionMenu&socialTitle=My+Chemical+Romance_Cancer&socialDescription=Short+Synopsis+-+English&socialImageLink=http%3A%2F%2Fstaging-vod-poster.astro.com.my%2Fposter%2FIVP%28STB_OTT_STV%29_Idiot_IVP_LAND_917x516_F7B93_20241129_105743.jpg&contentId=36ed2348-26e6-5fd7-a296-230bb038d017%7ECATC0000000001014675%7Evod`
+                        //const referrer = `https://links-astrostgeks.vsscloud-astro-stg.tv/content/36ed2348-26e6-5fd7-a296-230bb038d017~CATC0000000001014675~vod?contentType=content&utm_source=clevertap&utm_medium=post&utm_campaign=Astro&target=actionMenu&socialTitle=My+Chemical+Romance_Cancer&socialDescription=Short+Synopsis+-+English&socialImageLink=http%3A%2F%2Fstaging-vod-poster.astro.com.my%2Fposter%2FIVP%28STB_OTT_STV%29_Idiot_IVP_LAND_917x516_F7B93_20241129_105743.jpg&contentId=36ed2348-26e6-5fd7-a296-230bb038d017%7ECATC0000000001014675%7Evod`
                         // <-- full url
                         const playStoreUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}&referrer=${encodeURIComponent(referrer)}`;
-                          const strippedReferrer = referrer.replace(/^https?:\/\//, '');
+                         // const strippedReferrer = referrer.replace(/^https?:\/\//, '');
 
                         // URL to redirect if app is not installed
-                            const fallbackUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}`;
+                          //  const fallbackUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}`;
 
-                            const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};S.browser_fallback_url=${encodeURIComponent(fallbackUrl)};end;`;
+                          //  const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};S.browser_fallback_url=${encodeURIComponent(fallbackUrl)};end;`;
 
                         // const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};end;`;
 
-                         window.location.href = intentUrl;
+                         window.location.href = playStoreUrl;
                         // window.setTimeout(function(){
                         //     window.location.href = playStoreUrl;
                         // },250);
