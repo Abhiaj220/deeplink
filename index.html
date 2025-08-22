@@ -81,6 +81,8 @@
 
 				const strippedReferrer = referrer.replace(/^https?:\/\//, '');
 				const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end;`;
+
+				 window.location.href = intentUrl;
                 //  let openedApp = false;
                 // const onVis = () => {
                 //     if (document.visibilityState === 'hidden') openedApp = true;
