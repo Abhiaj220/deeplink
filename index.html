@@ -85,28 +85,15 @@
 
                          const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};end;`;
 
-                        
-                           let hasHidden = false;
-
-                            // Monitor if the tab becomes hidden (app launched)
-                            document.addEventListener('visibilitychange', () => {
-                                if (document.hidden) {
-                                    hasHidden = true;
-                                }
-                            });
+                    
                         
                             // Open the app
                             window.location.href = intentUrl;
                         
                             // Wait and fallback **only if the tab remained visible**
                             setTimeout(() => {
-                                if (!hasHidden) {
-                                    // Tab still visible → app didn't open → go to Play Store
-                                    window.location.href = playStoreUrl;
-                                } else {
-                                    console.log('App opened, no fallback needed.');
-                                }
-                            }, 1500); // Longer delay to wait for user action
+                                 window.location.href = playStoreUrl;
+                            }, 3000); // Longer delay to wait for user action
                         
                     } else if (isIOS()) {
                         // ssr - iosAppId need to take the value from a pillat varaible. Template it or inform Ilay to take care of the same.
