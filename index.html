@@ -83,18 +83,25 @@
                         const playStoreUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}&referrer=${encodeURIComponent(referrer)}`;
                           const strippedReferrer = referrer.replace(/^https?:\/\//, '');
 
-                          // URL to redirect if app is not installed
-                            // const fallbackUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}`;
-
-                            // const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};S.browser_fallback_url=${encodeURIComponent(fallbackUrl)};end;`;
-
                          const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};end;`;
+
+                        
+                          let hidden = false;
+                        
+                          // Listen for visibility change
+                          document.addEventListener('visibilitychange', function () {
+                            if (document.visibilityState === 'hidden') {
+                              hidden = true;
+                            }
+                          });
                         console.log("intent " + intentUrl);
                         
                          window.location.href = intentUrl;
-                        window.replace(window.location.href);
+                    
                           window.setTimeout(function(){
-                            window.location.href = playStoreUrl;
+                                 if (!hidden) {
+                                      window.location.href = playStoreUrl;
+                                }
                         },800);
                         
                     } else if (isIOS()) {
