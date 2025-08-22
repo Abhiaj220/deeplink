@@ -113,17 +113,17 @@
 
                 window.location = `synaottlink521993797://${encodeURIComponent(referrer)}`;                        
                 
-                // window.setTimeout(function(){
-                //     document.removeEventListener('visibilitychange', onVis);
-                //     window.removeEventListener('pagehide', onPageHide);
-                //     window.removeEventListener('blur', onBlur);
+                window.setTimeout(function(){
+                    document.removeEventListener('visibilitychange', onVis);
+                    window.removeEventListener('pagehide', onPageHide);
+                    window.removeEventListener('blur', onBlur);
 
-                //     if (openedApp) { //link is already opened in the app. No need to redirect to App Store
-                //         return;
-                //     }
+                    if (openedApp) { //link is already opened in the app. No need to redirect to App Store
+                        return;
+                    }
 
-                //     window.location = playStoreUrl;
-                // },2000);
+                    window.location = playStoreUrl;
+                },2000);
             } else if (isIOS()) {
                 // ssr - iosAppId need to take the value from a pillat varaible. Template it or inform Ilay to take care of the same.
                 const iosAppId = '521993797'; // <-- Replace with your iOS app's App Store ID
