@@ -3,7 +3,6 @@
 <head>
   <title>Open in App</title>
   <style>
-    /* Popup styles */
     #popup {
       display: none;
       position: fixed;
@@ -33,6 +32,12 @@
 </head>
 <body>
 
+<!-- Fallback CTA for Instagram users -->
+<div style="text-align:center; margin-top: 100px;">
+  <p>This content is best viewed in the app.</p>
+  <button onclick="showPopup()">Open in App</button>
+</div>
+
 <!-- Internal popup -->
 <div id="popup">
   <div id="popupContent">
@@ -55,23 +60,14 @@ function openApp() {
   closePopup();
 
   const androidPackageName = 'com.astro.astro';
-  const deepLink = 'https://links-astrostgeks.vsscloud-astro-stg.tv/content/abc123~xyz~vod'; // full deep link
+  const deepLink = 'https://links-astrostgeks.vsscloud-astro-stg.tv/content/abc123~xyz~vod'; 
   const strippedReferrer = deepLink.replace(/^https?:\/\//, '');
-
   const playStoreUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}&referrer=${encodeURIComponent(deepLink)}`;
 
   const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end;`;
 
   window.location.href = intentUrl;
 }
-
-// Automatically show the popup when page loads
-window.onload = function() {
-  // Only show on Android devices
-  if (/Android/i.test(navigator.userAgent)) {
-    showPopup();
-  }
-};
 </script>
 
 </body>
