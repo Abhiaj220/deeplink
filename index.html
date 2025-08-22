@@ -16,6 +16,33 @@
 			height: 100vh;
 		}
 
+		   /* Popup styles */
+    #popup {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #popupContent {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    #popupContent button {
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
 		.text-container {
 			position: absolute;
 			top: 40%;
@@ -55,6 +82,9 @@
 		(function() {
         // Device detection functions
         function isAndroid() {
+			if(/Android/i.test(navigator.userAgent)){
+				showPopup();
+			}
             return /Android/i.test(navigator.userAgent);
         }
 
@@ -68,63 +98,29 @@
             return (typeof window !== "undefined" && typeof document !== "undefined");
         }
 
+			function showPopup() {
+  document.getElementById('popup').style.display = 'flex';
+}
+
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+}
+
         window.setTimeout(function () {
             // Redirect logic
             if (isAndroid()) {
+				closePopup();
                 // ssr - androidPackageName need to take the value from a pillat varaible. Template it or inform Ilay to take care of the same.
                 const androidPackageName = 'com.astro.astro'; // <-- Replace with your Android app's package name
                 const referrer = `https://links-astrostgeks.vsscloud-astro-stg.tv/content/36ed2348-26e6-5fd7-a296-230bb038d017~CATC0000000001014675~vod?contentType=content&utm_source=clevertap&utm_medium=post&utm_campaign=Astro&target=actionMenu&socialTitle=My+Chemical+Romance_Cancer&socialDescription=Short+Synopsis+-+English&socialImageLink=http%3A%2F%2Fstaging-vod-poster.astro.com.my%2Fposter%2FIVP%28STB_OTT_STV%29_Idiot_IVP_LAND_917x516_F7B93_20241129_105743.jpg&contentId=36ed2348-26e6-5fd7-a296-230bb038d017%7ECATC0000000001014675%7Evod` // <-- full url
                 const playStoreUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}&referrer=${encodeURIComponent(referrer)}`;
+				  const strippedReferrer = deepLink.replace(/^https?:\/\//, '');
 
-                const divElement = document.createElement('div');
-                divElement.classList.add('text-container');
-                const reasonText = document.createElement('p');
-                reasonText.classList.add('text');
-                // ssr - the text and styling need to be redone to match Astro requirement. Ask Bindiya for the UI definition.
-                reasonText.textContent = 'Open app in Play Store?';
-                divElement.appendChild(reasonText);
-                document.body.appendChild(divElement);
+  const playStoreUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}&referrer=${encodeURIComponent(deepLink)}`;
 
-                const agreeButton = document.createElement('button');
-                // ssr - Same as text. The button styling, title need to be redone to match Astro requirement. Ask Bindiya for the UI definition.
-                agreeButton.textContent = 'OPEN';
-                agreeButton.onclick = function() {
-                    window.location = playStoreUrl;
-                }
-                document.body.appendChild(agreeButton);
+  const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end;`;
 
-                window.setTimeout(function(){
-                    let openedApp = false;
-                    const onVis = () => {
-                        if (document.visibilityState === 'hidden') openedApp = true;
-                    };
-
-                    const onPageHide = () => {
-                        openedApp = true;
-                    };
-
-                    const onBlur = () => {
-                        openedApp = true;
-                    };
-                    
-                    document.addEventListener('visibilitychange', onVis, { once: true });
-                    window.addEventListener('pagehide', onPageHide, { once: true });
-                    window.addEventListener('blur', onBlur, { once: true });
-
-                    window.location = `synaottlink521993797://${encodeURIComponent(referrer)}`;                        
-                },100);
-
-                window.setTimeout(function(){
-                    document.removeEventListener('visibilitychange', onVis);
-                    window.removeEventListener('pagehide', onPageHide);
-                    window.removeEventListener('blur', onBlur);
-
-                    if (openedApp) { //link is already opened in the app. No need to redirect to App Store
-                        return;
-                    }
-
-                    window.location = playStoreUrl;
-                },2000);
+  window.location.href = intentUrl;
             } else if (isIOS()) {
                 // ssr - iosAppId need to take the value from a pillat varaible. Template it or inform Ilay to take care of the same.
                 const iosAppId = '521993797'; // <-- Replace with your iOS app's App Store ID
@@ -191,5 +187,14 @@
 
 </script>
 </body>
+
+<!-- Internal popup -->
+<div id="popup">
+  <div id="popupContent">
+    <p>Do you want to open this content in the app?</p>
+    <button onclick="openApp()">OPEN</button>
+    <button onclick="closePopup()">CANCEL</button>
+  </div>
+</div>
 
 </html>
