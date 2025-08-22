@@ -83,12 +83,12 @@
                         const playStoreUrl = `https://play.google.com/store/apps/details?id=${androidPackageName}&referrer=${encodeURIComponent(referrer)}`;
                           const strippedReferrer = referrer.replace(/^https?:\/\//, '');
 
-                         const intentUrl = `intent://${strippedReferrer}#Intent;scheme=https;package=${androidPackageName};end;`;
+                         window.location = `synaottlink521993797://${encodeURIComponent(referrer)}`;
 
                     
                         
                             // Open the app
-                            window.location.href = intentUrl;
+                           // window.location.href = intentUrl;
                         
                             // Wait and fallback **only if the tab remained visible**
                             setTimeout(() => {
